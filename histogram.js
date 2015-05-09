@@ -47,5 +47,8 @@ Histogram.prototype = {
             var percentageValue = (this.values[index] / max) * height;
             ctx.fillRect(index, height, 1, -Math.round(percentageValue));
         }
+    },
+    getValues: function () {
+        return this.values;
     }
 };
