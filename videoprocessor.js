@@ -20,17 +20,16 @@ var videoProcessor = function() {
     }
 
     function computeFrame() {
-        ctx.drawImage(video, 0, 0, frameWidth, frameHeight);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         framesDataURL.push(new Frame(canvas.toDataURL(), video.currentTime));
-        var frame = ctx.getImageData(0, 0, frameWidth, frameHeight);
-        var dataLength = frame.data.length / 4;
+        var frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
         var histogram = new Histogram();
 
-        for (var index = 0; index < dataLength; index++) {
-            var red = frame.data[index * 4 + 0];
-            var green = frame.data[index * 4 + 1];
-            var blue = frame.data[index * 4 + 2];
-            histogram.increaseRGB(red, green, blue);
+        for (var index = 0; index < frame.data.length; index += 4) {
+            var red = frame.data[index + 0];
+            var green = frame.data[index + 1];
+            var blue = frame.data[index + 2];
+            histogram.increaseValuesFromRGB(red, green, blue);
         }
 
         shotDetection.addHistogram(histogram);
@@ -43,8 +42,8 @@ var videoProcessor = function() {
             canvas = document.getElementById("canvas");
             ctx = canvas.getContext("2d");
             video.addEventListener("play", function () {
-                frameWidth = video.videoWidth / 2;
-                frameHeight = video.videoHeight / 2;
+                frameWidth = video.videoWidth;
+                frameHeight = video.videoHeight;
                 timerCallback();
             }, false);
             video.addEventListener("seeked", function () {
