@@ -19,7 +19,7 @@ var shotDetection = function() {
 
     function isSceneChange(currentHistogram, lastHistogram) {
         // TODO: implement formula for scene change detection
-        return Math.random() < 0.005;
+        return Math.random() < 0.01;
     }
 
     function visualizeFrame(index) {
