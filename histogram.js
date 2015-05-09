@@ -1,7 +1,8 @@
 'use strict';
 
 
-function Histogram() {
+function Histogram(colorSpace) {
+    this.setColorSpace(colorSpace);
     this.initialize();
 }
 
@@ -11,14 +12,24 @@ Histogram.prototype = {
         this.fillDefaults(this.values, 0);
         this.canvas = document.getElementById("histogram");
         this.ctx = this.canvas.getContext("2d");
+        this.canvas.width = this.valuesLength;
     },
     fillDefaults: function(array, defaultValue) {
-        for (var i = 0; i < 512; i++) {
+        for (var i = 0; i < this.valuesLength; i++) {
             array[i] = defaultValue;
         }
     },
-    increaseRGB: function (red, green, blue) {
-        var combinedValue = this.get9BitRGB(red, green, blue);
+    setColorSpace: function (colorSpace) {
+        if(colorSpace == 'rgb') {
+            this.getValueFromRGB = this.get9BitRGB;
+            this.valuesLength = 512;
+        } else {
+            this.getValueFromRGB = this.getYFromRGB;
+            this.valuesLength = 256;
+        }
+    },
+    increaseValuesFromRGB: function (red, green, blue) {
+        var combinedValue = Math.round( this.getValueFromRGB(red, green, blue) );
         this.increaseValues( combinedValue );
     },
     get9BitRGB: function (red, green, blue) {
@@ -33,6 +44,10 @@ Histogram.prototype = {
         var combined = combiningRed | combiningGreen | combiningBlue;
 
         return combined;
+    },
+    getYFromRGB: function (red, green, blue) {
+        var r = 0.299 * red + 0.587 * green + 0.114 * blue;
+        return r
     },
     increaseValues: function (rgb) {
         this.values[rgb]++;
