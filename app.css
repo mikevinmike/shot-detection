@@ -1,0 +1,31 @@
+body {
+    background: black;
+    color:#CCCCCC;
+    font-family: 'Damion', cursive;
+}
+div:not(.frame) {
+    float: left;
+    border : 1px solid #444444;
+    padding: 1%;
+    margin: 1%;
+    background:#3B3B3B;
+}
+.hide {
+    display: none;
+}
+.clear {
+    clear: both;
+}
+#sceneContainer {
+    width: 96%;
+    min-height: 377px;
+}
+#sceneContainer .frame {
+    float: left;
+    margin: 0.6%;
+}
+.frame span {
+    display: block;
+    padding: 0 0.5em;
+    text-align: right;
+}

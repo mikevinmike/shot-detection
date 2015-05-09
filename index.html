@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Damion' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="app.css">
+</head>
+
+<body onload="videoProcessor.doLoad()">
+
+    <div>
+        <video id="video" src="video.webm" controls="true" width="auto" height="250"></video>
+    </div>
+    <div>
+        <canvas id="canvas" class="hide"></canvas>
+        <canvas id="histogram" width="512" height="250"></canvas>
+    </div>
+    <div id="sceneContainer" class="clear"></div>
+
+    <script src="videoprocessor.js"></script>
+    <script src="histogram.js"></script>
+    <script src="shotdetection.js"></script>
+    <script src="frame.js"></script>
+
+</body>
+</html>
