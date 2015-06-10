@@ -8,10 +8,8 @@ self.addEventListener('message', function(e) {
     var lastHistogramValues = e.data.lastHistogramValues;
 
     if(sceneChangeDetector.isSceneChange(currentHistogramValues, lastHistogramValues)) {
-        console.log('scene change', e.data.index),
         self.postMessage(e.data.index); // return message only if scene has changed
         return;
     }
-    console.log('nooooo scene change')
 
 }, false);
