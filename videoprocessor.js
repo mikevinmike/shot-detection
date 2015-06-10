@@ -17,24 +17,38 @@ var videoProcessor = function() {
         computeFrame();
         setTimeout(function () {
             timerCallback();
-        }, 0);
+        }, 10);
     }
 
     function computeFrame() {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         framesDataURL.push(new Frame(canvas.toDataURL(), video.currentTime));
-        var frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        var histogram = new Histogram();
+        var frame = ctx.getImageData(0, 0, canvas.width / 2, canvas.height / 2);
 
-        for (var index = 0; index < frame.data.length; index += 4) {
-            var red = frame.data[index + 0];
-            var green = frame.data[index + 1];
-            var blue = frame.data[index + 2];
-            histogram.increaseValuesFromRGB(red, green, blue);
+        var imageData = canvas.toDataURL('image/jpeg');
+        document.getElementById('image').setAttribute('src', imageData);
+        $('#image').trigger('imageDataChanged');
+
+        var edgeCanvas = document.getElementById("rawData");
+        var edgeCtx = edgeCanvas.getContext("2d");
+        var edgeFrame = edgeCtx.getImageData(0, 0, edgeCanvas.width * 0.66, edgeCanvas.height * 0.66);
+        var edgeHistogram = new Histogram();
+        for (var index = 0; index < edgeFrame.data.length; index += 4) {
+            var red = edgeFrame.data[index + 0];
+            var green = edgeFrame.data[index + 1];
+            var blue = edgeFrame.data[index + 2];
+            edgeHistogram.increaseValuesFromRGB(red, green, blue);
         }
 
-        shotDetection.addHistogram(histogram);
-        histogram.draw();
+        var histogram = new Histogram();
+
+
+        //shotDetection.addHistogram(histogram);
+        //histogram.draw();
+
+        shotDetection.addHistogram(edgeHistogram);
+        edgeHistogram.draw();
+
         notifySubscribers();
     }
 

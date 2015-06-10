@@ -75,7 +75,7 @@ var statistics = function() {
     function calculatePrecision() {
         var numberOfFalslyDetectedCuts = falslyDetectedCuts;
         var precision = detectedCuts / (detectedCuts + numberOfFalslyDetectedCuts);
-        console.log(detectedCuts, numberOfFalslyDetectedCuts);
+        //console.log(detectedCuts, numberOfFalslyDetectedCuts);
         return precision || 0;
     }
 

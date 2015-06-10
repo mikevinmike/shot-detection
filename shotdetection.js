@@ -27,8 +27,15 @@ var shotDetection = function() {
         sum1 = arraySum(currentHistogram.values);
         sum2 = arraySum(difference);
 
+        if (0 == sum2) {
+            return false;
+        }
 
-        if (sum1 <= sum2) {
+        var percentualDifference = Math.abs(100 - (sum1 * 100) / sum2);
+
+        console.log(percentualDifference);
+
+        if (percentualDifference > 0.15) {
             return true;
         }
         return false;
