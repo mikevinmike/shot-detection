@@ -3,7 +3,7 @@ body {
     color:#CCCCCC;
     font-family: 'Damion', cursive;
 }
-div:not(.frame) {
+div:not(.frame):not(#statistics) {
     float: left;
     border : 1px solid #444444;
     padding: 1%;
@@ -29,4 +29,7 @@ div:not(.frame) {
     display: block;
     padding: 0 0.5em;
     text-align: right;
+}
+#statistics > * {
+    display: block;
 }
