@@ -4,29 +4,33 @@ var shotDetection = function() {
 
     var histograms = [];
     var lastFrameNo = -1;
-    var frameDisplacement = 12;
+    var frameDisplacement = 9; // number of frames to skip for scene change detection
+    var pufferSize = 6; // number of histograms to compare for scene change detection
+    var pufferSizeWithFrameDisplacement = pufferSize * frameDisplacement;
 
-    var sceneChangeWorker = new Worker("scene-change.worker.js");
-    sceneChangeWorker.onmessage = function addSceneChange(event){
+    var sceneChangeMultipleWorker = new Worker("scene-change-multiple.worker.js");
+    sceneChangeMultipleWorker.onmessage = function addSceneChange(event){
         var index = event.data;
         countSceneChange(index);
     };
 
     function detectSceneChange() {
         lastFrameNo++;
-        if(lastFrameNo % frameDisplacement !== 0) {
+        if(lastFrameNo % parseInt(pufferSizeWithFrameDisplacement * 0.9) !== 0) {
             return
         }
         var numberOfHistograms = histograms.length;
-        if(numberOfHistograms < frameDisplacement) {
+        if(numberOfHistograms < pufferSizeWithFrameDisplacement) {
             return;
         }
-        var currentHistogram = histograms[numberOfHistograms - 1];
-        var lastHistogram = histograms[numberOfHistograms - frameDisplacement];
 
-        sceneChangeWorker.postMessage({
-            currentHistogramValues: currentHistogram.values,
-            lastHistogramValues: lastHistogram.values,
+        var histogramValuesPuffer = [];
+        for(var index = numberOfHistograms - 1 - pufferSizeWithFrameDisplacement; index < numberOfHistograms; index += frameDisplacement) {
+            histogramValuesPuffer.push(histograms[index].values);
+        }
+
+        sceneChangeMultipleWorker.postMessage({
+            histogramValueArray: histogramValuesPuffer,
             index: numberOfHistograms - 1
         });
     }
