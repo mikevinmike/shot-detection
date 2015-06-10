@@ -1,27 +1,22 @@
 'use strict';
 
 importScripts('./histogram.js');
-importScripts('./frame-selection.js');
 
 self.addEventListener('message', function(e) {
     var frame = e.data.frame;
-    var previousFrame = e.data.previousFrame;
     var messageIndex = e.data.index;
 
-    var histogram = computeFrameAndReturnHistogram(frame, previousFrame);
+    var histogram = computeFrameAndReturnHistogram(frame);
 
     if(!histogram) {
         return;
     }
 
-    self.postMessage({histogramValues: histogram.values, index: messageIndex});
+    self.postMessage({ histogramValues: histogram.values, index: messageIndex });
 
 }, false);
 
-function computeFrameAndReturnHistogram(frame, previousFrame) {
-    if(frameSelection.isEqualFrame(frame, previousFrame)) {
-        return; // ignore equal frames
-    }
+function computeFrameAndReturnHistogram(frame) {
 
     var histogram = new Histogram();
     for (var index = 0; index < frame.data.length; index += 4) {

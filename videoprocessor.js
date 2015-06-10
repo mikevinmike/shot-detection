@@ -11,7 +11,13 @@ var videoProcessor = function() {
         framesDataURL = [],
         histogramDrawer;
 
+    var frameSelectionWorker = new Worker("frame-selection.worker.js");
     var computeFrameWorker = new Worker("compute-frame.worker.js");
+
+    frameSelectionWorker.onmessage = function forwardToComputation(event) {
+        computeFrameWorker.postMessage(event.data);
+    };
+
     computeFrameWorker.onmessage = function processUniqueHistogram(event){
         // only data from unique frames get to here
         var index = event.data.index;
@@ -41,7 +47,7 @@ var videoProcessor = function() {
         framesDataURLDuplicates.push(new Frame(canvas.toDataURL(), video.currentTime));
         var frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        computeFrameWorker.postMessage({
+        frameSelectionWorker.postMessage({
             frame: frame,
             previousFrame: previousFrame,
             index: framesDataURLDuplicates.length - 1
