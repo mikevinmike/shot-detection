@@ -5,6 +5,7 @@ var statistics = function() {
     var detectedCuts = 0;
     var falslyDetectedCuts = 0;
     var sintelTrailerCutsAtSecond = [
+        2,
         5,
         9,
         12,
@@ -18,7 +19,7 @@ var statistics = function() {
         28,
         29,
         32,
-        36,
+        35,
         42,
         47,
         49,
@@ -36,10 +37,11 @@ var statistics = function() {
         return numberOfCuts
     }
     function getCorrectCut(currentTimeInSeconds) {
+        var toleranceInSeconds = 1;
         var undetectedCut;
-                (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds+0.5))) !== -1
+                (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds + toleranceInSeconds))) !== -1
                 ||
-                (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds-0.5))) !== -1;
+                (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds - toleranceInSeconds))) !== -1;
         return undetectedCut < 0 ? undefined : undetectedCut;
     }
 
