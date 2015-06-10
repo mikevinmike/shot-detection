@@ -1,11 +1,6 @@
 # shot-detection
 
-This is a javascript project, which detects scene changes based on histograms.
-
-ToDo
-----
-Look for TODO annotations in source files.
-Scene change detection is random at this time, implement a formula there.
+This is a javascript project, which detects scene changes based on histograms and edge detection.
 
 Compatibility
 -------------
