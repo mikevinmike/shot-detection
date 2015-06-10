@@ -1,7 +1,25 @@
 'use strict';
 
 var sceneChangeDetector = function () {
-    
+
+    function isSceneChangeWithPuffer(histogramValuesArray) {
+        var sceneChangeIndizes = [];
+        var previousHistogramValues = histogramValuesArray[0];
+        for(var index = 1; index < histogramValuesArray.length; index++) {
+            var histogramValues = histogramValuesArray[index];
+            if(isSceneChange(histogramValues, previousHistogramValues)) {
+                sceneChangeIndizes.push(index);
+            }
+        }
+
+        if(sceneChangeIndizes.length === 0) {
+            return
+        }
+
+        return Math.max.apply(this, sceneChangeIndizes);
+
+    }
+
     function isSceneChange(currentHistogramValues, lastHistogramValues) {
         var difference;
         difference = arrayDifferenceAssociation(currentHistogramValues, lastHistogramValues);
@@ -63,6 +81,7 @@ var sceneChangeDetector = function () {
     }
 
     return {
-        isSceneChange: isSceneChange
+        isSceneChange: isSceneChange,
+        isSceneChangeWithPuffer: isSceneChangeWithPuffer
     };
 }();
