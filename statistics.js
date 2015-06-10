@@ -42,7 +42,7 @@ var statistics = function() {
                 (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds + toleranceInSeconds))) !== -1
                 ||
                 (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds - toleranceInSeconds))) !== -1;
-        return undetectedCut < 0 ? undefined : undetectedCut;
+        return undetectedCut < 0 ? undefined : undetectedCutsAtSecond[undetectedCut];
     }
 
     function update() {
