@@ -37,7 +37,7 @@ var statistics = function() {
         return numberOfCuts
     }
     function getCorrectCut(currentTimeInSeconds) {
-        var toleranceInSeconds = 1;
+        var toleranceInSeconds = 0.75;
         var undetectedCut;
                 (undetectedCut = undetectedCutsAtSecond.indexOf(parseInt(currentTimeInSeconds + toleranceInSeconds))) !== -1
                 ||
